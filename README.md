@@ -1,3 +1,38 @@
+> **Public case study** — team Formula Student firmware snapshot; not the full private team repository.
+
+---
+
+## The hook
+
+Formula Student cars need a **driver-visible picture of the vehicle** (powertrain, temperatures, gear, warnings) while engineers need **reliable bus data** — our second central DAQ had to do both on a noisy, vibration-heavy car.
+
+## High-level impact
+
+- On-car **Arduino Mega** dash: **500 kbps CAN**, **Nextion HMI**, **NeoPixel shift lights**, **LoRa** crank/kill, optional **SD logging**.
+- **Team Fateh** — public snapshot of dashboard/DAQ I worked on.
+- **Formula Bharat: 1st of 50** teams (engineering design + business case) during my time on DAQ/electronics.
+
+## My contribution
+
+- Developed and iterated **dash_master** firmware (multiple versioned releases on car).
+- Implemented **CAN decode**, **gear pulse detection**, **HMI updates**, **shift-light mapping**, and **LoRa engine control** paths.
+- Supported **LoRa telemetry** context from **20+ sensors** for trackside visibility (broader team DAQ).
+
+## Tech and design choices
+
+| Choice | Why |
+| --- | --- |
+| **Arduino Mega + MCP2515** | Team familiarity, sufficient UART/SPI for HMI + CAN + SD trials. |
+| **Nextion HMI** | Fast UI iteration without custom display stack on race timeline. |
+| **Dual-channel LoRa** | Crank/kill and telemetry experiments without rewiring the whole car each event. |
+| **Versioned `dash_master_*` folders** | Incremental features (brake pressure, speed, SD) without losing last-known-good car config. |
+
+## Lesson / twist
+
+**CAN frame loss** showed as HMI “red” states during cranking when bus traffic spiked — improved by **prioritizing decode paths** and tuning what the dash displayed during transient ECU states vs treating every missed frame as a hard fault.
+
+---
+
 # Formula Student dashboard and central DAQ
 
 Arduino firmware for the **second central DAQ unit** on a Formula Student car, built with **Team Fateh** (UNSW). The unit sits on the driver dash, reads vehicle data over **CAN**, drives a **Nextion HMI**, controls **engine crank/kill**, and provides **RPM shift lights** on a NeoPixel strip.
