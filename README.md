@@ -2,7 +2,7 @@
 
 ---
 
-## The hook
+## Problem statement
 
 Formula Student cars need a **driver-visible picture of the vehicle** (powertrain, temperatures, gear, warnings) while engineers need **reliable bus data** — our second central DAQ had to do both on a noisy, vibration-heavy car.
 
