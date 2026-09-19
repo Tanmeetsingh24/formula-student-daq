@@ -1,22 +1,22 @@
-> **Public case study** — team Formula Student firmware snapshot; not the full private team repository.
+> **Public case study.** Team Formula Student firmware snapshot; not the full private team repository.
 
 ---
 
 ## Problem statement
 
-Formula Student cars need a **driver-visible picture of the vehicle** (powertrain, temperatures, gear, warnings) while engineers need **reliable bus data** — our second central DAQ had to do both on a noisy, vibration-heavy car.
+Formula Student cars need a **driver-visible picture of the vehicle** (powertrain, temperatures, gear, warnings) while engineers need **reliable bus data**. our second central DAQ had to do both on a noisy, vibration-heavy car.
 
 ## High-level impact
 
-- On-car **Arduino Mega** dash: **500 kbps CAN**, **Nextion HMI**, **NeoPixel shift lights**, **LoRa** crank/kill, optional **SD logging**.
-- **Team Fateh** — public snapshot of dashboard/DAQ I worked on.
-- **Formula Bharat: 1st of 50** teams (engineering design + business case) during my time on DAQ/electronics.
+1. On-car **Arduino Mega** dash: **500 kbps CAN**, **Nextion HMI**, **NeoPixel shift lights**, **LoRa** crank/kill, optional **SD logging**.
+2. **Team Fateh**. public snapshot of dashboard/DAQ I worked on.
+3. **Formula Bharat: 1st of 50** teams (engineering design + business case) during my time on DAQ/electronics.
 
 ## My contribution
 
-- Developed and iterated **dash_master** firmware (multiple versioned releases on car).
-- Implemented **CAN decode**, **gear pulse detection**, **HMI updates**, **shift-light mapping**, and **LoRa engine control** paths.
-- Supported **LoRa telemetry** context from **20+ sensors** for trackside visibility (broader team DAQ).
+1. Developed and iterated **dash_master** firmware (multiple versioned releases on car).
+2. Implemented **CAN decode**, **gear pulse detection**, **HMI updates**, **shift-light mapping**, and **LoRa engine control** paths.
+3. Supported **LoRa telemetry** context from **20+ sensors** for trackside visibility (broader team DAQ).
 
 ## Tech and design choices
 
@@ -27,9 +27,9 @@ Formula Student cars need a **driver-visible picture of the vehicle** (powertrai
 | **Dual-channel LoRa** | Crank/kill and telemetry experiments without rewiring the whole car each event. |
 | **Versioned `dash_master_*` folders** | Incremental features (brake pressure, speed, SD) without losing last-known-good car config. |
 
-## Lesson / twist
+## Lesson
 
-**CAN frame loss** showed as HMI “red” states during cranking when bus traffic spiked — improved by **prioritizing decode paths** and tuning what the dash displayed during transient ECU states vs treating every missed frame as a hard fault.
+**CAN frame loss** showed as HMI “red” states during cranking when bus traffic spiked. Improved by **prioritizing decode paths** and tuning what the dash displayed during transient ECU states vs treating every missed frame as a hard fault.
 
 ---
 
@@ -37,7 +37,7 @@ Formula Student cars need a **driver-visible picture of the vehicle** (powertrai
 
 Arduino firmware for the **second central DAQ unit** on a Formula Student car, built with **Team Fateh** (UNSW). The unit sits on the driver dash, reads vehicle data over **CAN**, drives a **Nextion HMI**, controls **engine crank/kill**, and provides **RPM shift lights** on a NeoPixel strip.
 
-This repo is a public snapshot of the dashboard firmware I worked on. It is team engineering work, not a solo project — expect iterative version folders, trial sketches, and some features left commented out mid-development.
+This repo is a public snapshot of the dashboard firmware I worked on. It is team engineering work, not a solo project. expect iterative version folders, trial sketches, and some features left commented out mid-development.
 
 ---
 
@@ -69,10 +69,10 @@ This repo is a public snapshot of the dashboard firmware I worked on. It is team
 Each loop cycle the dash master:
 
 1. **Listens on CAN** for ECU frames and decodes RPM, coolant temperature, and battery voltage.
-2. **Reads gear position** from a selector wired to a digital input — gear is inferred from pulse width (`pulseIn`).
+2. **Reads gear position** from a selector wired to a digital input. gear is inferred from pulse width (`pulseIn`).
 3. **Updates the Nextion display** over UART using Nextion text-component commands (`t4`, `t5`, `t10`, etc.).
-4. **Drives the shift-light strip** — blue below ~3.5k RPM, green through mid-range, red near redline, flashing above ~9.5k.
-5. **Handles LoRa commands** (in later versions) — `'c'` cranks the engine, `'k'` kills it, `'d'` sends a test telemetry string.
+4. **Drives the shift-light strip**. blue below ~3.5k RPM, green through mid-range, red near redline, flashing above ~9.5k.
+5. **Handles LoRa commands** (in later versions). `'c'` cranks the engine, `'k'` kills it, `'d'` sends a test telemetry string.
 6. **Optional subsystems** (present in some versions): wheel-speed from a proximity sensor interrupt, brake-pressure bar graph on the HMI, SD card CSV logging, over-temp HMI background warning above 95 °C.
 
 ---
@@ -89,7 +89,7 @@ The firmware listens on a **500 kbps** CAN bus (8 MHz SPI clock, CS pin 10, INT 
 
 When CAN packets arrive, status indicators on the HMI turn **green**; loss of signal turns them **red**.
 
-> Standalone CAN bring-up sketches live in `CAN/` — useful for verifying transceiver wiring and decoding frames on Serial before integrating into the full dash.
+> Standalone CAN bring-up sketches live in `CAN/`. useful for verifying transceiver wiring and decoding frames on Serial before integrating into the full dash.
 
 ---
 
@@ -159,7 +159,7 @@ Vehicle wiring into the unit: **12 V**, chassis ground, **CAN H/L**, analogue ge
 | Folder | Contents |
 | ------ | -------- |
 | **`DASH_MASTER/`** | Main integrated firmware. Each subfolder is a version snapshot (see below). Sketches are split across `.ino` tabs: `CAN.ino`, `Gear.ino`, `RPM_LED.ino`, `Engine_control.ino`, `LoRa.ino`, `Speed.ino`, `Brake_pressure.ino`, `Sd_card.ino`, etc. |
-| **`HMI Display/`** | Nextion Editor project (`HMI2.2.0.HMI`) — compile and flash to the display separately. |
+| **`HMI Display/`** | Nextion Editor project (`HMI2.2.0.HMI`). compile and flash to the display separately. |
 | **`CAN/`** | Standalone CAN receive trials and versioned CAN-only sketches (`can_2.1.1`, `can_2.2.2`, …). |
 | **`Gear/`** | Isolated gear-selector → HMI test (`Gear1.0`). |
 | **`LoRa/`** | E32 LoRa module trials, transmitter sketches, and breakout reference files. |
@@ -177,8 +177,8 @@ Versions follow `dash_master_X.Y.Z` naming. Later numbers generally add features
 | ------ | ---------- |
 | `dash_master_2.2.5` | Brake pressure on HMI, coolant over-temp warning |
 | `dash_master_2.2.6_LoRa_SD` | LoRa + SD logging integration (partially commented) |
-| `dash_master_2.3.3_crank_kill_working` | **Reliable LoRa crank/kill** — good reference for engine control |
-| `dash_master_2.3.5` | Latest snapshot — crank/kill, wheel speed, LoRa telemetry command |
+| `dash_master_2.3.3_crank_kill_working` | **Reliable LoRa crank/kill**. good reference for engine control |
+| `dash_master_2.3.5` | Latest snapshot. crank/kill, wheel speed, LoRa telemetry command |
 
 Start with **`dash_master_2.3.5`** for the most complete feature set, or **`dash_master_2.3.3_crank_kill_working`** if you only need CAN + gear + HMI + crank/kill + shift lights.
 
@@ -188,9 +188,9 @@ Start with **`dash_master_2.3.5`** for the most complete feature set, or **`dash
 
 Install via the Arduino Library Manager or PlatformIO:
 
-- [`CAN`](https://github.com/sandeepmistry/arduino-CAN) — MCP2515 CAN bus
-- [`FastLED`](https://github.com/FastLED/FastLED) — NeoPixel shift lights
-- `SD` / `SPI` — SD card logging (built into Arduino core)
+1. [`CAN`](https://github.com/sandeepmistry/arduino-CAN). MCP2515 CAN bus
+2. [`FastLED`](https://github.com/FastLED/FastLED). NeoPixel shift lights
+3. `SD` / `SPI`. SD card logging (built into Arduino core)
 
 Board target: **Arduino Mega 2560**.
 
@@ -201,11 +201,11 @@ Board target: **Arduino Mega 2560**.
 1. Open the desired version folder in the Arduino IDE (e.g. `DASH_MASTER/dash_master_2.3.5/`).
 2. Select **Board: Arduino Mega 2560** and the correct serial port.
 3. Install the libraries above.
-4. Upload the sketch — all `.ino` tabs in the folder are compiled together.
+4. Upload the sketch. all `.ino` tabs in the folder are compiled together.
 5. Flash the Nextion separately using the `.HMI` project in `HMI Display/` with Nextion Editor.
 
 ---
 
 ## Note
 
-This is **Team Fateh Formula Student** firmware — a working fork of the team's dashboard codebase. Some subsystems (SD logging, full LoRa telemetry, speed estimation) were developed incrementally and may be commented out or split across version folders. Treat this as a reference implementation of the dash DAQ architecture rather than a single polished release.
+This is **Team Fateh Formula Student** firmware. a working fork of the team's dashboard codebase. Some subsystems (SD logging, full LoRa telemetry, speed estimation) were developed incrementally and may be commented out or split across version folders. Treat this as a reference implementation of the dash DAQ architecture rather than a single polished release.
